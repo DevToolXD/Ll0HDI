@@ -3,107 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP 정보 조회기</title>
+    <title>내 네트워크 접속 정보</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             background-color: #121212;
-            color: #eee;
-            font-family: sans-serif;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
             padding: 1rem;
-            box-sizing: border-box;
         }
-        .box {
+
+        .card {
             background: #1e1e1e;
-            padding: 1.5rem;
-            border-radius: 10px;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
+            padding: 1.8rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
         }
-        .input-group {
+
+        .title {
+            font-size: 1rem;
+            color: #888888;
+            margin-bottom: 0.5rem;
+        }
+
+        .ip-highlight {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #3b82f6;
+            background: #262626;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            word-break: break-all;
+        }
+
+        .info-list {
             display: flex;
-            gap: 8px;
-            margin-bottom: 1rem;
+            flex-direction: column;
+            gap: 0.75rem;
+            text-align: left;
+            border-top: 1px solid #333333;
+            padding-top: 1.2rem;
         }
-        input {
-            flex: 1;
-            padding: 8px 12px;
-            background: #2a2a2a;
-            border: 1px solid #444;
-            color: #fff;
-            border-radius: 6px;
-        }
-        button {
-            padding: 8px 16px;
-            background: #2563eb;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        .result {
-            font-size: 0.9rem;
-            line-height: 1.8;
-            border-top: 1px solid #333;
-            padding-top: 1rem;
-        }
-        .row {
+
+        .info-item {
             display: flex;
             justify-content: space-between;
+            font-size: 0.9rem;
         }
-        .label { color: #888; }
-        .val { color: #60a5fa; font-weight: 500; }
+
+        .label {
+            color: #aaaaaa;
+        }
+
+        .value {
+            color: #f3f4f6;
+            font-weight: 500;
+            text-align: right;
+        }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <div class="input-group">
-        <input type="text" id="target-ip" value="59.13.193.68" placeholder="조회할 IP 입력">
-        <button onclick="lookupIP()">조회</button>
-    </div>
+<div class="card">
+    <div class="title">현재 접속 중인 내 IP 주소</div>
+    <div class="ip-highlight" id="my-ip">확인 중...</div>
 
-    <div class="result" id="output">
-        <div class="row"><span class="label">IP:</span> <span class="val" id="res-ip">-</span></div>
-        <div class="row"><span class="label">국가:</span> <span class="val" id="res-country">-</span></div>
-        <div class="row"><span class="label">도시:</span> <span class="val" id="res-city">-</span></div>
-        <div class="row"><span class="label">ISP:</span> <span class="val" id="res-isp">-</span></div>
-        <div class="row"><span class="label">ASN:</span> <span class="val" id="res-asn">-</span></div>
+    <div class="info-list">
+        <div class="info-item">
+            <span class="label">통신사 (ISP)</span>
+            <span class="value" id="my-isp">-</span>
+        </div>
+        <div class="info-item">
+            <span class="label">지역 / 도시</span>
+            <span class="value" id="my-location">-</span>
+        </div>
+        <div class="info-item">
+            <span class="label">국가</span>
+            <span class="value" id="my-country">-</span>
+        </div>
+        <div class="info-item">
+            <span class="label">식별 번호 (ASN)</span>
+            <span class="value" id="my-asn">-</span>
+        </div>
     </div>
 </div>
 
 <script>
-    async function lookupIP() {
-        const ip = document.getElementById('target-ip').value.trim();
-        if (!ip) return;
-
-        document.getElementById('res-ip').textContent = '조회 중...';
-
+    // 페이지 로드 시 접속자 본인의 IP와 네트워크 메타데이터를 자동 조회
+    async function getMyNetworkData() {
         try {
-            const res = await fetch(`https://ipapi.co/${ip}/json/`);
-            const data = await res.json();
+            const response = await fetch('https://ipapi.co/json/');
+            if (!response.ok) throw new Error();
 
-            if (data.error) {
-                alert('유효하지 않은 IP 주소입니다.');
-                return;
-            }
+            const data = await response.json();
 
-            document.getElementById('res-ip').textContent = data.ip;
-            document.getElementById('res-country').textContent = `${data.country_name} (${data.country_code})`;
-            document.getElementById('res-city').textContent = `${data.region || ''} ${data.city || ''}`.trim() || '미확인';
-            document.getElementById('res-isp').textContent = data.org || data.isp || '미확인';
-            document.getElementById('res-asn').textContent = data.asn || '미확인';
-        } catch (e) {
-            document.getElementById('res-ip').textContent = '조회 실패';
+            // 가져온 본인 정보 화면에 바인딩
+            document.getElementById('my-ip').textContent = data.ip;
+            document.getElementById('my-isp').textContent = data.org || data.isp || '미확인';
+            document.getElementById('my-location').textContent = `${data.region || ''} ${data.city || ''}`.trim() || '미확인';
+            document.getElementById('my-country').textContent = `${data.country_name} (${data.country_code})`;
+            document.getElementById('my-asn').textContent = data.asn || '미확인';
+        } catch (error) {
+            document.getElementById('my-ip').textContent = '조회 실패';
         }
     }
 
-    // 초기 로드 시 59.13.193.68 자동 조회
-    lookupIP();
+    window.addEventListener('DOMContentLoaded', getMyNetworkData);
 </script>
 
 </body>
